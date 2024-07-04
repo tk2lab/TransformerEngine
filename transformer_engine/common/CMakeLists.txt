@@ -52,6 +52,12 @@ target_include_directories(transformer_engine PRIVATE
                            ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 target_include_directories(transformer_engine PRIVATE "${CUDNN_FRONTEND_INCLUDE_DIR}")
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+    target_link_libraries(transformer_engine PRIVATE stdc++fs)
+  endif()
+endif()
+
 # Make header files with C++ strings
 function(make_string_header STRING STRING_NAME)
     configure_file(util/string_header.h.in
